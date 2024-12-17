@@ -20,9 +20,8 @@ set(CPACK_PACKAGE_VENDOR "Ваше имя или компания")
 set(CPACK_PACKAGE_CONTACT "Ваш контактный email")
 include(CPack)
 
-set(BOOST_ROOT "${PROJECT_SOURCE_DIR}/boost") # Относительный путь
-set(Boost_INCLUDE_DIRS "${BOOST_ROOT}/boost/spirit/include/")
-set(Boost_LIBRARIES "${BOOST_ROOT}/libs") 
+set(Boost_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/include")
+include_directories(${Boost_INCLUDE_DIRS})
 
 # Проверка, существуют ли указанные директории
 if(NOT EXISTS "${Boost_INCLUDE_DIRS}")
