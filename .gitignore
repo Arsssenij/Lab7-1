@@ -1,1 +1,7 @@
-/boost/
+# Игнорировать всю библиотеку Boost, кроме выбранных файлов
+boost/
+!boost/boost/             # Сохранить только папку заголовков
+!boost/boost/crc.hpp      # Добавить нужные файлы
+!boost/boost/filesystem.hpp
+!boost/boost/program_options.hpp
+!boost/boost/spirit/      # Если нужно
