@@ -14,21 +14,22 @@ FetchContent_Declare(
   Boost
   GIT_REPOSITORY https://github.com/boostorg/boost.git
   GIT_TAG boost-1.86.0 # Указываем версию Boost
+  SOURCE_DIR ${CMAKE_BINARY_DIR}/boost-src
 )
 
 # Загружаем Boost
 FetchContent_MakeAvailable(Boost)
 
-# Поддиректория для сборки Boost
-set(BOOST_BUILD_DIR ${Boost_SOURCE_DIR}/cmake)
-add_subdirectory(${BOOST_BUILD_DIR} ${Boost_BINARY_DIR})
+# Добавляем Boost в CMake
+set(Boost_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/boost-src)
+set(Boost_LIBRARIES ${CMAKE_BINARY_DIR}/boost-src/stage/lib)
 
 # Исполняемая цель
 add_executable(lab7 main.cpp)
 
 # Подключаем Boost
-target_include_directories(lab7 PRIVATE ${Boost_SOURCE_DIR})
-target_link_libraries(lab7 PRIVATE Boost::filesystem)
+target_include_directories(lab7 PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(lab7 PRIVATE ${Boost_LIBRARIES})
 
 # Установка исполняемого файла
 install(TARGETS lab7 DESTINATION bin)

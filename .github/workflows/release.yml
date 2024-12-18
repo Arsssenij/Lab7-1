@@ -6,29 +6,6 @@ on:
       - main
 
 jobs:
-  build_macos:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Install dependencies
-      run: brew install cmake
-    - name: Build and Test
-      run: |
-        cmake -S . -B build
-        cmake --build build
-        ctest --output-on-failure --test-dir build
-    - name: Package
-      run: |
-        cmake --install build --prefix install
-        cmake --build build --target package
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: lab7-macos
-        path: build/*.zip
-
   build_ubuntu:
     runs-on: ubuntu-latest
     steps:
@@ -36,16 +13,24 @@ jobs:
       with:
         submodules: true
     - name: Install dependencies
-      run: sudo apt update && sudo apt install -y cmake
-    - name: Build and Test
       run: |
-        cmake -S . -B build
-        cmake --build build
-        ctest --output-on-failure --test-dir build
+        sudo apt update
+        sudo apt install -y cmake g++ python3 # Python3 нужен для сборки Boost
+    - name: Fetch and Build Boost
+      run: |
+        mkdir -p build
+        cd build
+        cmake -DFETCHCONTENT_SOURCE_DIR_BOOST=${{ github.workspace }}/boost-src ..
+        cmake --build . --target lab7
+    - name: Test Project
+      run: |
+        cd build
+        ctest --output-on-failure
     - name: Package
       run: |
-        cmake --install build --prefix install
-        cmake --build build --target package
+        cd build
+        cmake --install . --prefix install
+        cmake --build . --target package
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
