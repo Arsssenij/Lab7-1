@@ -14,7 +14,6 @@ FetchContent_Declare(
   Boost
   GIT_REPOSITORY https://github.com/boostorg/boost.git
   GIT_TAG boost-1.86.0 # Укажите версию Boost, которая поддерживает вашу версию CMake
-  GIT_SUBMODULES "" # Включает все подмодули
 )
 
 # Загружаем и добавляем Boost
@@ -22,9 +21,6 @@ FetchContent_MakeAvailable(Boost)
 
 # Устанавливаем Boost в проект
 find_package(Boost 1.86.0 REQUIRED COMPONENTS filesystem)
-
-# Установка пути до Boost вручную
-set(BOOST_ROOT "${CMAKE_SOURCE_DIR}/_deps/boost-src")
 
 # Исполняемая цель
 add_executable(lab7 main.cpp)
